@@ -1,29 +1,29 @@
 // Problem: 9 - Palindrome Number
 // Leetcode: https://leetcode.com/problems/palindrome-number/
 
-// Solution Type: Mathematical / Iterative
-// Approach: Reverse the integer and compare it with the original value.
-// Time Complexity: O(log₁₀(x))
+// Solution Type: Math / Two-Pointer (Half Reversal)
+// Approach:
+//   - Negative numbers are not palindromes.
+//   - Numbers ending with 0 cannot be palindromes except 0.
+//   - Reverse only the second half of the number to avoid overflow
+//   - Stop when the reversed half becomes greater than or equal to the remaining half i.e. (revHalf >= x)
+
+// Time Complexity: O(log₁₀ n)
 // Space Complexity: O(1)
 
-#include <climits>
 class Solution {
 public:
     bool isPalindrome(int x) {
-        if (x < 0)
+        if(x<0 || (x%10==0 && x!=0))
             return false;
 
-        int original = x;
-        int reversed = 0;
-
-        while (x != 0) {
-            if (reversed > INT_MAX / 10) 
-                return false;
-
-            reversed = (reversed * 10) + (x % 10);
-            x /= 10;
+        int revHalf= 0;
+        while(revHalf < x){
+            revHalf= (revHalf*10) + (x%10);
+            x/=10;
         }
 
-        return original == reversed;
+        return (revHalf == x) || (revHalf/10 == x); // (revHalf/10 == x) removes middle digit for odd length number
     }
 };
+
